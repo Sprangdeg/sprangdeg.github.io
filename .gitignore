@@ -1,0 +1,4 @@
+start.sh
+_site/
+Gemfile.lock
+.DS_Store
