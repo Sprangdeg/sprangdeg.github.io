@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
 import {
+  BehaviorSubject,
+  Observable,
   Subject,
+  concatMap,
+  delay,
   filter,
   from,
   interval,
   map,
+  mergeMap,
   of,
   switchMap,
+  take,
   takeUntil,
   tap,
 } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-ngrx-operators',
@@ -103,6 +109,7 @@ export class NgrxOperatorsComponent implements OnInit {
   private stopTimer$ = new Subject<void>();
 
   ngOnInit() {
+    this.initializeTasks();
     this.switchMapData$
       .pipe(switchMap(() => interval(100).pipe(takeUntil(this.stopTimer$))))
       .subscribe(
@@ -119,5 +126,92 @@ export class NgrxOperatorsComponent implements OnInit {
 
   public onApplySwitchMap(): void {
     this.switchMapData$.next();
+  }
+
+  public pendingTasks$ = new BehaviorSubject<number[]>([]);
+  public finishedTasks$ = new BehaviorSubject<number[]>([]);
+  public currentTasks$ = new BehaviorSubject<number[]>([]);
+
+  public initializeTasks(): void {
+    this.pendingTasks$.next([1, 2, 3, 4, 5]);
+    this.finishedTasks$.next([]);
+    this.currentTasks$.next([]);
+  }
+
+  public onApplyMergeMap(): void {
+    this.initializeTasks();
+    this.pendingTasks$
+      .pipe(
+        take(1), // Take only the first emission of pendingTasks$
+        delay(2000), // Delay before starting
+        mergeMap((tasks) =>
+          from(tasks).pipe(
+            tap((id) => this.removePendingTask(id)),
+            mergeMap((id) =>
+              this.apiRequest(id, 2000 + Math.random() * 2000).pipe(
+                // Added randomness to delay
+                tap((id) => this.currentTaskStarted(id)),
+                tap(() => this.taskFinished(id))
+              )
+            )
+          )
+        )
+      )
+      .subscribe();
+  }
+
+  public onApplyConcatMap(): void {
+    this.initializeTasks();
+    this.pendingTasks$
+      .pipe(
+        take(1), // Take only the first emission of pendingTasks$
+        delay(2000), // Delay before starting
+        concatMap((tasks) =>
+          from(tasks).pipe(
+            concatMap((id) =>
+              this.apiRequest(id, 2000).pipe(
+                tap(() => this.currentTaskStarted(id)),
+                tap(() => this.removePendingTask(id)),
+                tap(() => this.taskFinished(id))
+              )
+            )
+          )
+        )
+      )
+      .subscribe();
+  }
+
+  private taskFinished(id: number): void {
+    const finishedTasks = this.finishedTasks$.getValue();
+    this.finishedTasks$.next([...finishedTasks, id]);
+
+    const currentTasks = this.currentTasks$.getValue();
+    this.currentTasks$.next(currentTasks.filter((task) => task !== id));
+  }
+
+  private apiRequest(id: number, delayTime: number): Observable<number> {
+    this.currentTaskStarted(id);
+    return of(id).pipe(
+      delay(delayTime),
+      tap(() => {
+        this.currentTaskFinished(id);
+      })
+    );
+  }
+
+  private removePendingTask(id: number): void {
+    const pendingTasks = this.pendingTasks$.getValue();
+    this.pendingTasks$.next(pendingTasks.filter((task) => task !== id));
+  }
+
+  private currentTaskStarted(id: number): void {
+    this.removePendingTask(id);
+    const currentTasks = this.currentTasks$.getValue();
+    this.currentTasks$.next([...currentTasks, id]);
+  }
+
+  private currentTaskFinished(id: number): void {
+    const currentTasks = this.currentTasks$.getValue();
+    this.currentTasks$.next(currentTasks.filter((task) => task !== id));
   }
 }

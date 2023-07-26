@@ -3,9 +3,12 @@
     <mat-card>
       <mat-toolbar color="primary">"of" Operator </mat-toolbar>
       <mat-card-content>
-        Creates an Observable that emits the arguments (like arrays) as a whole.
-        Any connected function will receive the entire data "as is".
+        <p>
+          Creates an Observable that emits the arguments (like arrays) as a
+          whole. Any connected function will receive the entire data "as is".
+        </p>
         <mat-divider></mat-divider>
+        <b>Emitting data from an array</b>
         <p>Original Data: [{{ originalData }}]</p>
         <p>Output Data: [{{ outputDataOf }}]</p>
       </mat-card-content>
@@ -20,9 +23,11 @@
   <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
     <mat-card>
       <mat-toolbar color="primary">Map</mat-toolbar>
-      <mat-card-content>
-        Applies the provided function to each item emitted by the Observable,
-        and returns a new Observable that emits the results.
+      <mat-card-content
+        ><p>
+          Applies the provided function to each item emitted by the Observable,
+          and returns a new Observable that emits the results.
+        </p>
         <mat-divider></mat-divider>
         <div *ngIf="data$ | async as data">
           <b>Uppercase Strings</b>
@@ -42,11 +47,13 @@
   <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
     <mat-card>
       <mat-toolbar color="primary">Filter</mat-toolbar>
-      <mat-card-content>
-        Creates a new Observable from the original Observable, which only emits
-        those items for which the provided filtering function returns true. In
-        other words, it filters out the items in the Observable that don't pass
-        the filtering condition.
+      <mat-card-content
+        ><p>
+          Creates a new Observable from the original Observable, which only
+          emits those items for which the provided filtering function returns
+          true. In other words, it filters out the items in the Observable that
+          don't pass the filtering condition.
+        </p>
         <mat-divider></mat-divider>
         <div *ngIf="filterNumbers$ | async as filterNumbers">
           <b>Filter numbers bigger than three</b>
@@ -62,10 +69,13 @@
   <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
     <mat-card>
       <mat-toolbar color="primary">Pipe</mat-toolbar>
-      <mat-card-content>
-        Used to chain multiple operators together. You can provide any number of
-        operators as arguments, and they will be applied in the order you
-        provide. The result will be a new Observable that you can subscribe to.
+      <mat-card-content
+        ><p>
+          Used to chain multiple operators together. You can provide any number
+          of operators as arguments, and they will be applied in the order you
+          provide. The result will be a new Observable that you can subscribe
+          to.
+        </p>
         <mat-divider></mat-divider>
         <div *ngIf="originalPipeData$ | async as pipeNumbers">
           <b>Filter and Map</b>
@@ -121,11 +131,13 @@
   <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
     <mat-card>
       <mat-toolbar color="primary">SwitchMap</mat-toolbar>
-      <mat-card-content>
-        SwitchMap can cancel the execution of the current inner function that is
-        running and start a new one instead. Useful if you are calling an API
-        and the user clicks the button multiple times. Then it will cancel the
-        current request and start a new one.
+      <mat-card-content
+        ><p>
+          SwitchMap can cancel the execution of the current inner function that
+          is running and start a new one instead. Useful if you are calling an
+          API and the user clicks the button multiple times. Then it will cancel
+          the current request and start a new one.
+        </p>
         <mat-divider></mat-divider>
         <b>Counter that restart when clicking again</b>
         <button (click)="onApplySwitchMap()">
@@ -138,4 +150,62 @@
       </mat-card-content>
     </mat-card>
   </div>
+  <div
+    fxFlex="100%"
+    fxFlex.gt-sm="50%"
+    fxFlex.gt-md="33%"
+    fxFlex.gt-lg="25%"
+  ></div>
+  <mat-card>
+    <mat-toolbar color="primary">MergeMap/ConcatMap</mat-toolbar>
+    <mat-card-content>
+      <p>
+        Both mergeMap and concatMap are used for handling 'higher-order
+        Observables'. Higher-order Observables are Observables that emit other
+        Observables. This often happens when dealing with asynchronous actions,
+        such as HTTP requests, which return Observables.
+      </p>
+      <p>
+        The map operator, in contrast, is used when the Observable emits data
+        directly, not other Observables. In other words, use map when each
+        emission transforms to another value, and use mergeMap or concatMap when
+        each emission transforms into another Observable.
+      </p>
+      <p>
+        The difference between mergeMap and concatMap lies in the order and
+        concurrency of handling the emitted Observables. mergeMap subscribes to
+        all the emitted inner Observables simultaneously as they are emitted, so
+        the order of the results is not guaranteed to match the order of
+        emissions.
+      </p>
+      <p>
+        On the other hand, concatMap preserves the order of emissions by
+        subscribing to the next inner Observable only after the previous one has
+        completed. This means that concatMap handles the emissions sequentially.
+      </p>
+      <mat-divider></mat-divider>
+      <b
+        >MergeMap finnishes in any order while concatMap finnishes in the same
+        order it starts</b
+      >
+
+      <h2>Pending Tasks</h2>
+      <div *ngIf="pendingTasks$ | async as pendingTasks">
+        [ {{ pendingTasks.join(", ") }} ]
+      </div>
+
+      <h2>Current Tasks</h2>
+      <div *ngIf="currentTasks$ | async as currentTasks">
+        [ {{ currentTasks.join(", ") }} ]
+      </div>
+      <h2>Finished Tasks</h2>
+      <div *ngIf="finishedTasks$ | async as finishedTasks">
+        [ {{ finishedTasks.join(", ") }} ]
+      </div>
+      <button (click)="onApplyMergeMap()">Start mergeMap</button>
+      <button style="margin-left: 1em" (click)="onApplyConcatMap()">
+        Start concatMap
+      </button>
+    </mat-card-content>
+  </mat-card>
 </div>
