@@ -1,105 +1,11 @@
-<!-- app.component.html -->
-
-<div class="app-container">
-  <header>
-    <h1>RxJS Operator Demonstrations</h1>
-  </header>
-
-  <main class="operator-sections">
-    <section>
-      <h2>"of" Operator</h2>
-      Creates an Observable that emits the arguments (like arrays) as a whole. Any connected function will receive the entire data "as is".
-      <div>
-        <p>Original Data: [{{ originalData }}]</p>
-        <button (click)="onApplyOf()">Apply "of" Operator</button>
-        <p>Output Data: [{{ outputDataOf }}]</p>
-      </div>
-
-      <h2>"from" Operator</h2>
-      Creates an Observable from an array, Promise, or iterable. In case of an array, each individual item is emitted separately to any function connected to the Observable.
-      <div>
-        <p>Original Data: [{{ originalData }}]</p>
-        <button (click)="onApplyFrom()">Apply "from" Operator</button>
-        <p>Output Data: {{ outputDataFrom.join(', ') }}</p>
-      </div>
-    </section>
-
-    <section class="operator-card">
-      <h2>Map</h2>
-      Applies the provided function to each item emitted by the Observable, and returns a new Observable that emits the results.
-      <div *ngIf="data$ | async as data;">
-        <h3>Example 1: Uppercase Strings</h3>
-        <p>Original Data: {{ data }}</p>
-        <button (click)="onApplyMap()">map(str => str.toUpperCase())</button>
-        <p>Output Data: {{ outputData }}</p>
-
-        <h3>Example 2: Double Numbers</h3>
-        <div *ngIf="numbers$ | async as numbers;">
-          <p>Original Data: {{ numbers }}</p>
-          <button (click)="onApplyMathOperation()">map(n => n * 2)</button>
-          <p>Output Data: {{ outputNumbers }}</p>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>Filter</h2>
-      Creates a new Observable from the original Observable, which only emits those items for which the provided filtering function returns true. In other words, it filters out the items in the Observable that don't pass the filtering condition.
-      <div *ngIf="filterNumbers$ | async as filterNumbers;">
-        <h3>Example 1: Uppercase Strings</h3>
-        <p>Original Data: {{ filterNumbers }}</p>
-        <button (click)="onApplyFilter()">filter(number => number%2 === 0)</button>
-        <p>Output Data: {{ filterOutputNumbers }}</p>
-      </div>
-    </section>
-
-    <section>
-      <h2>Pipe</h2>
-      Used to chain multiple operators together. You can provide any number of operators as arguments, and they will be applied in the order you provide.
-      The result will be a new Observable that you can subscribe to.
-      <div *ngIf="originalPipeData$ | async as pipeNumbers;">
-        <h3>Example 1: Uppercase Strings</h3>
-        <p>Original Data: {{ pipeNumbers.join(', ') }}</p>
-        <button (click)="onApplyPipe()">      
-          <p style="color: white;">
-            pipe(<br>
-            &nbsp;&nbsp;filter(num => num % 2 === 0),<br>
-            &nbsp;&nbsp;map(num => num * 2)<br>
-            )
-          </p>     
-        </button>
-        <p>Output Data: {{ pipeOutput.join(', ') }}</p>
-      </div>
-    </section>
-
-    <section>
-      <h2>Tap</h2>
-      <p>Tap is designed to perform side effects, such as logging, debugging, or triggering notifications, within an Observable sequence. 
-      It allows you to "tap into" the data flow at any point, and execute functions based on the current value. </p>
-      <p>Performing side effects in other operators, like map or mergeMap, could lead to impure functions and unpredictable data streams, 
-      making it more difficult to understand and debug the Observable sequence.  </p>
-      Therefore, tap helps keep these side effects isolated and manageable. 
-      While it's possible to alter the data in a tap function, it's typically recommended to avoid doing so to maintain clarity and predictability in your data flow.      
-      <div *ngIf="originalPipeData$ | async as pipeNumbers;">
-        <h3>Example 1: Uppercase Strings</h3>
-        <p>Original Data: {{ pipeNumbers.join(', ') }}</p>
-        <button (click)="onApplyTap()">      
-          <p style="color: white;">
-            tap(n =&gt; &#123;<br>
-            &nbsp;&nbsp;if (n === 4)<br>
-            alert(`Value &#123;n&#125; is 4`);<br>
-            &#125;)<br>
-          </p>     
-        </button>
-      </div>
-    </section>
-
-    <section>
-      <h2>SwitchMap</h2>
-      SwitchMap can cancel the execution of the current inner function that is running and start a new one instead.
-      Useful if you are calling an API and the user clicks the button multiple times. Then it will cancel the current request and start a new one.
-      <br><br><button (click)="onApplySwitchMap()">switchMap(() => AmazingCountingFunction())</button> <button style="margin-left: 1em;" (click)="onStopTimer()">Stop Counting</button>
-      <p>Output: {{ switchMapOutput }}</p>
-    </section>
-  </main>
-</div>
+<mat-drawer-container class="container">
+  <mat-drawer class="side-nav" mode="side" opened>
+    <h2>Blog posts</h2>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/NgrxOperators">NgRx Operators</a>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content class="content">
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

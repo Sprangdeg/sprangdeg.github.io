@@ -1,0 +1,145 @@
+<mat-toolbar color="primary">
+  <span>RxJS Operators</span>
+</mat-toolbar>
+
+<div fxLayout="row wrap" fxLayoutGap="10px grid">
+  <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
+    <mat-card>
+      <mat-toolbar color="primary">"of" Operator </mat-toolbar>
+      <mat-card-content>
+        Creates an Observable that emits the arguments (like arrays) as a whole.
+        Any connected function will receive the entire data "as is".
+        <mat-divider></mat-divider>
+        <p>Original Data: [{{ originalData }}]</p>
+        <p>Output Data: [{{ outputDataOf }}]</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="onApplyOf()">Apply "of" Operator</button>
+        <button mat-button (click)="onApplyFrom()">
+          Apply "from" Operator
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
+    <mat-card>
+      <mat-toolbar color="primary">Map</mat-toolbar>
+      <mat-card-content>
+        Applies the provided function to each item emitted by the Observable,
+        and returns a new Observable that emits the results.
+        <mat-divider></mat-divider>
+        <div *ngIf="data$ | async as data">
+          <b>Uppercase Strings</b>
+          <p>Original Data: {{ data }}</p>
+          <button (click)="onApplyMap()">map(str => str.toUpperCase())</button>
+          <p>Output Data: {{ outputData }}</p>
+          <b>Double Numbers</b>
+          <div *ngIf="numbers$ | async as numbers">
+            <p>Original Data: {{ numbers }}</p>
+            <button (click)="onApplyMathOperation()">map(n => n * 2)</button>
+            <p>Output Data: {{ outputNumbers }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
+    <mat-card>
+      <mat-toolbar color="primary">Filter</mat-toolbar>
+      <mat-card-content>
+        Creates a new Observable from the original Observable, which only emits
+        those items for which the provided filtering function returns true. In
+        other words, it filters out the items in the Observable that don't pass
+        the filtering condition.
+        <mat-divider></mat-divider>
+        <div *ngIf="filterNumbers$ | async as filterNumbers">
+          <b>Filter numbers bigger than three</b>
+          <p>Original Data: {{ filterNumbers }}</p>
+          <button (click)="onApplyFilter()">
+            filter(number => number > 3)
+          </button>
+          <p>Output Data: {{ filterOutputNumbers }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
+    <mat-card>
+      <mat-toolbar color="primary">Pipe</mat-toolbar>
+      <mat-card-content>
+        Used to chain multiple operators together. You can provide any number of
+        operators as arguments, and they will be applied in the order you
+        provide. The result will be a new Observable that you can subscribe to.
+        <mat-divider></mat-divider>
+        <div *ngIf="originalPipeData$ | async as pipeNumbers">
+          <b>Filter and Map</b>
+          <p>Original Data: {{ pipeNumbers.join(", ") }}</p>
+          <button (click)="onApplyPipe()">
+            <p style="color: white">
+              pipe(<br />
+              &nbsp;&nbsp;filter(num => num > 3),<br />
+              &nbsp;&nbsp;map(num => num * 2)<br />
+              )
+            </p>
+          </button>
+          <p>Output Data: {{ pipeOutput.join(", ") }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
+    <mat-card>
+      <mat-toolbar color="primary">Tap</mat-toolbar>
+      <mat-card-content>
+        <p>
+          Tap is designed to perform side effects, such as logging, debugging,
+          or triggering notifications, within an Observable sequence. It allows
+          you to "tap into" the data flow at any point, and execute functions
+          based on the current value.
+        </p>
+        <p>
+          Performing side effects in other operators, like map or mergeMap,
+          could lead to impure functions and unpredictable data streams, making
+          it more difficult to understand and debug the Observable sequence.
+        </p>
+        Therefore, tap helps keep these side effects isolated and manageable.
+        While it's possible to alter the data in a tap function, it's typically
+        recommended to avoid doing so to maintain clarity and predictability in
+        your data flow.
+        <mat-divider></mat-divider>
+        <div *ngIf="originalPipeData$ | async as pipeNumbers">
+          <b>Tap in to the sequence to alert when number is 4</b>
+          <p>Original Data: {{ pipeNumbers.join(", ") }}</p>
+          <button (click)="onApplyTap()">
+            <p style="color: white">
+              tap(n =&gt; &#123;<br />
+              &nbsp;&nbsp;if (n === 4)<br />
+              alert(`Value &#123;n&#125; is 4`);<br />
+              &#125;)<br />
+            </p>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
+    <mat-card>
+      <mat-toolbar color="primary">SwitchMap</mat-toolbar>
+      <mat-card-content>
+        SwitchMap can cancel the execution of the current inner function that is
+        running and start a new one instead. Useful if you are calling an API
+        and the user clicks the button multiple times. Then it will cancel the
+        current request and start a new one.
+        <mat-divider></mat-divider>
+        <b>Counter that restart when clicking again</b>
+        <button (click)="onApplySwitchMap()">
+          switchMap(() => AmazingCountingFunction())
+        </button>
+        <button style="margin-left: 1em" (click)="onStopTimer()">
+          Stop Counting
+        </button>
+        <p>Output: {{ switchMapOutput }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
