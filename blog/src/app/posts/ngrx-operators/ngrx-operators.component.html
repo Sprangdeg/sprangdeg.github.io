@@ -150,62 +150,76 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div
-    fxFlex="100%"
-    fxFlex.gt-sm="50%"
-    fxFlex.gt-md="33%"
-    fxFlex.gt-lg="25%"
-  ></div>
-  <mat-card>
-    <mat-toolbar color="primary">MergeMap/ConcatMap</mat-toolbar>
-    <mat-card-content>
-      <p>
-        Both mergeMap and concatMap are used for handling 'higher-order
-        Observables'. Higher-order Observables are Observables that emit other
-        Observables. This often happens when dealing with asynchronous actions,
-        such as HTTP requests, which return Observables.
-      </p>
-      <p>
-        The map operator, in contrast, is used when the Observable emits data
-        directly, not other Observables. In other words, use map when each
-        emission transforms to another value, and use mergeMap or concatMap when
-        each emission transforms into another Observable.
-      </p>
-      <p>
-        The difference between mergeMap and concatMap lies in the order and
-        concurrency of handling the emitted Observables. mergeMap subscribes to
-        all the emitted inner Observables simultaneously as they are emitted, so
-        the order of the results is not guaranteed to match the order of
-        emissions.
-      </p>
-      <p>
-        On the other hand, concatMap preserves the order of emissions by
-        subscribing to the next inner Observable only after the previous one has
-        completed. This means that concatMap handles the emissions sequentially.
-      </p>
-      <mat-divider></mat-divider>
-      <b
-        >MergeMap finnishes in any order while concatMap finnishes in the same
-        order it starts</b
-      >
+  <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-md="33%" fxFlex.gt-lg="25%">
+    <mat-card>
+      <mat-toolbar color="primary">MergeMap/ConcatMap</mat-toolbar>
+      <mat-card-content>
+        <p>
+          Both mergeMap and concatMap are used for handling 'higher-order
+          Observables'. Higher-order Observables are Observables that emit other
+          Observables. This often happens when dealing with asynchronous
+          actions, such as HTTP requests, which return Observables.
+        </p>
+        <p>
+          The map operator, in contrast, is used when the Observable emits data
+          directly, not other Observables. In other words, use map when each
+          emission transforms to another value, and use mergeMap or concatMap
+          when each emission transforms into another Observable.
+        </p>
+        <p>
+          The difference between mergeMap and concatMap lies in the order and
+          concurrency of handling the emitted Observables. mergeMap subscribes
+          to all the emitted inner Observables simultaneously as they are
+          emitted, so the order of the results is not guaranteed to match the
+          order of emissions.
+        </p>
+        <p>
+          On the other hand, concatMap preserves the order of emissions by
+          subscribing to the next inner Observable only after the previous one
+          has completed. This means that concatMap handles the emissions
+          sequentially.
+        </p>
+        <mat-divider></mat-divider>
+        <b
+          >MergeMap finnishes in any order while concatMap finnishes in the same
+          order it starts</b
+        >
 
-      <h2>Pending Tasks</h2>
-      <div *ngIf="pendingTasks$ | async as pendingTasks">
-        [ {{ pendingTasks.join(", ") }} ]
-      </div>
+        <h2>Pending Tasks</h2>
+        <div *ngIf="pendingTasks$ | async as pendingTasks">
+          [ {{ pendingTasks.join(", ") }} ]
+        </div>
 
-      <h2>Current Tasks</h2>
-      <div *ngIf="currentTasks$ | async as currentTasks">
-        [ {{ currentTasks.join(", ") }} ]
-      </div>
-      <h2>Finished Tasks</h2>
-      <div *ngIf="finishedTasks$ | async as finishedTasks">
-        [ {{ finishedTasks.join(", ") }} ]
-      </div>
-      <button (click)="onApplyMergeMap()">Start mergeMap</button>
-      <button style="margin-left: 1em" (click)="onApplyConcatMap()">
-        Start concatMap
-      </button>
-    </mat-card-content>
-  </mat-card>
+        <h2>Current Tasks</h2>
+        <div *ngIf="currentTasks$ | async as currentTasks">
+          [ {{ currentTasks.join(", ") }} ]
+        </div>
+        <h2>Finished Tasks</h2>
+        <div *ngIf="finishedTasks$ | async as finishedTasks">
+          [ {{ finishedTasks.join(", ") }} ]
+        </div>
+        <button
+          [disabled]="isProcessing$ | async"
+          (click)="onApplyMergeMap()"
+          [style.background-color]="
+            (isProcessing$ | async) ? 'gray' : '#007bff'
+          "
+          [style.color]="(isProcessing$ | async) ? 'black' : 'white'"
+        >
+          Start mergeMap
+        </button>
+        <button
+          [disabled]="isProcessing$ | async"
+          style="margin-left: 1em"
+          (click)="onApplyConcatMap()"
+          [style.background-color]="
+            (isProcessing$ | async) ? 'gray' : '#007bff'
+          "
+          [style.color]="(isProcessing$ | async) ? 'black' : 'white'"
+        >
+          Start concatMap
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

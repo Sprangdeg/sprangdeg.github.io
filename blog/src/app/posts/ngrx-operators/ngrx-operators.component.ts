@@ -5,6 +5,7 @@ import {
   concatMap,
   delay,
   filter,
+  finalize,
   from,
   interval,
   map,
@@ -131,6 +132,7 @@ export class NgrxOperatorsComponent implements OnInit {
   public pendingTasks$ = new BehaviorSubject<number[]>([]);
   public finishedTasks$ = new BehaviorSubject<number[]>([]);
   public currentTasks$ = new BehaviorSubject<number[]>([]);
+  public isProcessing$ = new BehaviorSubject<boolean>(false);
 
   public initializeTasks(): void {
     this.pendingTasks$.next([1, 2, 3, 4, 5]);
@@ -139,6 +141,7 @@ export class NgrxOperatorsComponent implements OnInit {
   }
 
   public onApplyMergeMap(): void {
+    this.isProcessing$.next(true);
     this.initializeTasks();
     this.pendingTasks$
       .pipe(
@@ -155,12 +158,14 @@ export class NgrxOperatorsComponent implements OnInit {
               )
             )
           )
-        )
+        ),
+        finalize(() => this.isProcessing$.next(false))
       )
       .subscribe();
   }
 
   public onApplyConcatMap(): void {
+    this.isProcessing$.next(true);
     this.initializeTasks();
     this.pendingTasks$
       .pipe(
@@ -176,7 +181,8 @@ export class NgrxOperatorsComponent implements OnInit {
               )
             )
           )
-        )
+        ),
+        finalize(() => this.isProcessing$.next(false))
       )
       .subscribe();
   }
