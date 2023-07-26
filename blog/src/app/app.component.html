@@ -1,5 +1,11 @@
-<mat-drawer-container class="container">
-  <mat-drawer class="side-nav" mode="side" opened>
+<mat-toolbar class="mat-toolbar" color="primary">
+  <button mat-icon-button (click)="toggleNavMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Your Application Title</span>
+</mat-toolbar>
+<mat-drawer-container class="mat-drawer-container">
+  <mat-drawer class="side-nav" mode="side" [opened]="showNavMenu">
     <h2>Blog posts</h2>
     <mat-nav-list>
       <a mat-list-item routerLink="/NgrxOperators">NgRx Operators</a>
