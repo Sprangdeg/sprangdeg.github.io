@@ -5,9 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgrxOperatorsComponent } from './posts/ngrx-operators/ngrx-operators.component';
+import { CardComponent } from './components/card/card.component';
 
 @NgModule({
-  declarations: [AppComponent, NgrxOperatorsComponent],
+  declarations: [AppComponent, NgrxOperatorsComponent, CardComponent],
   imports: [
     AppMaterialModule,
     BrowserModule,
