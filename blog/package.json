@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve -o",
     "build": "ng build",
     "publish": "ng build --configuration production && npx ngh --dir=dist/blog",
     "watch": "ng build --watch --configuration development",
