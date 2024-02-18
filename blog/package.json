@@ -7,8 +7,7 @@
     "build": "ng build",
     "publish": "node version.js && ng build --configuration production && npx ngh --dir=dist/blog",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "version": "node version.js"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
