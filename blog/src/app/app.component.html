@@ -2,7 +2,8 @@
   <button mat-icon-button (click)="toggleNavMenu()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>Bonstrom - {{ currentRoute }}</span>
+  <span matTooltip="Build: {{ version }}" matTooltipShowDelay="1000" matTooltipPosition="after">Bonstrom - {{
+    currentRoute }}</span>
 </mat-toolbar>
 <mat-drawer-container class="mat-drawer-container">
   <mat-drawer class="side-nav" mode="side" [opened]="showNavMenu">

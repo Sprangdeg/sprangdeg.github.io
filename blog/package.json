@@ -5,9 +5,10 @@
     "ng": "ng",
     "start": "ng serve -o",
     "build": "ng build",
-    "publish": "ng build --configuration production && npx ngh --dir=dist/blog",
+    "publish": "node version.js && ng build --configuration production && npx ngh --dir=dist/blog",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "version": "node version.js"
   },
   "private": true,
   "dependencies": {

@@ -13,19 +13,19 @@ html {
 }
 
 .mat-drawer-container {
-  height: calc(100vh - 56px); /* Adjust for height of toolbar */
+  height: calc(100vh - 56px);
 }
 
 .side-nav {
   width: 15em;
   padding: 1em;
-  height: 100vh; /* Side-nav height the same as the viewport */
-  overflow-y: auto; /* Enable vertical scrollbar if needed */
-  overflow-x: hidden; /* Prevent horizontal scrollbar */
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .content {
-  height: calc(100vh - 56px); /* Content area height adjusted for toolbar */
-  overflow-y: auto; /* Enable vertical scrollbar if needed */
-  overflow-x: hidden; /* Prevent horizontal scrollbar */
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }

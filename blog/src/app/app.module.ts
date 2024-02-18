@@ -7,6 +7,7 @@ import { NgModule } from '@angular/core';
 import { NgrxOperatorsComponent } from './posts/ngrx-operators/ngrx-operators.component';
 import { CardComponent } from './components/card/card.component';
 import { AsyncComponent } from './posts/async/async.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [AppComponent, NgrxOperatorsComponent, CardComponent, AsyncComponent],
@@ -15,8 +16,9 @@ import { AsyncComponent } from './posts/async/async.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
