@@ -17,11 +17,29 @@ import {
   tap,
 } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { FlexModule } from '@angular/flex-layout/flex';
 
 @Component({
-  selector: 'app-ngrx-operators',
-  templateUrl: './ngrx-operators.component.html',
-  styleUrls: ['./ngrx-operators.component.scss'],
+    selector: 'app-ngrx-operators',
+    templateUrl: './ngrx-operators.component.html',
+    styleUrls: ['./ngrx-operators.component.scss'],
+    standalone: true,
+    imports: [
+        FlexModule,
+        MatCard,
+        MatToolbar,
+        MatCardContent,
+        MatDivider,
+        MatCardActions,
+        MatButton,
+        NgIf,
+        AsyncPipe,
+    ],
 })
 export class NgrxOperatorsComponent implements OnInit {
   data$ = of(['Angular', 'React', 'Vue', 'Svelte']);

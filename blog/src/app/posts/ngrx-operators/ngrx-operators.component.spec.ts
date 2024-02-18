@@ -8,8 +8,8 @@ describe('NgrxOperatorsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NgrxOperatorsComponent],
-    }).compileComponents();
+    imports: [NgrxOperatorsComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(NgrxOperatorsComponent);
     component = fixture.componentInstance;
